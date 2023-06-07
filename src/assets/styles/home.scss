@@ -1,0 +1,15 @@
+// Banner Section
+.home-banner {
+  background: url('/src/assets/images/img_man-section-top.webp') no-repeat right top;
+  background-size: cover;
+  background-position-x: 300px;
+}
+
+// rating
+.rating {
+  input {
+    appearance: none;
+    width: 0;
+    height: 0;
+  }
+}
