@@ -64,11 +64,27 @@ const newTaskId = ref()
       Task {{ index + 1 }}: {{ item.title }}
     </div>
     <div class="kanban-footer">
-      <form action="">
-        <p><input type="text" v-model="newTaskId" placeholder="task id" /></p>
-        <p><input type="text" v-model="newTask" placeholder="Enter new task" /></p>
-      </form>
-      <button @click="$emit('addItemToList', { newTaskId, newTask, id })">Add Item</button>
+      <div class="card p-3">
+        <form action="" @submit.prevent>
+          <p>
+            <input type="text" v-model="newTaskId" placeholder="task id" class="form-control" />
+          </p>
+          <p>
+            <input
+              type="text"
+              v-model="newTask"
+              placeholder="Enter new task"
+              class="form-control"
+            />
+          </p>
+          <button
+            @click="$emit('addItemToList', { newTaskId, newTask, id })"
+            class="btn btn-primary"
+          >
+            Add
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 </template>

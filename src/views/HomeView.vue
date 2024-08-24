@@ -58,6 +58,15 @@ const filterTaskList = (dropToId: String) => {
   removeItemFromList(draggedItemType.value)
   addItemToList(dropToId)
 }
+
+const addNewItem = (info: object) => {
+  console.log('add new item ', info)
+  let item = { id: Number(info.newTaskId), title: info.newTask }
+  draggedItem.value = item
+  console.log(item)
+  addItemToList(info.id)
+  // draggedItemType.value = id
+}
 </script>
 
 <template>
@@ -73,6 +82,7 @@ const filterTaskList = (dropToId: String) => {
             id="todo"
             @filter-task="filterTaskList"
             @drag-event="storeDraggedItem"
+            @add-item-to-list="addNewItem"
           />
         </div>
         <!-- In Progress Column -->
@@ -83,6 +93,7 @@ const filterTaskList = (dropToId: String) => {
             id="inProgress"
             @filter-task="filterTaskList"
             @drag-event="storeDraggedItem"
+            @add-item-to-list="addNewItem"
           />
         </div>
         <!-- Done Column -->
@@ -93,6 +104,7 @@ const filterTaskList = (dropToId: String) => {
             id="done"
             @filter-task="filterTaskList"
             @drag-event="storeDraggedItem"
+            @add-item-to-list="addNewItem"
           />
         </div>
       </div>
