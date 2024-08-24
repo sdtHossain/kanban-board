@@ -18,6 +18,10 @@
   background-color: #f1f1f1;
 }
 
+.kanban-item.moving {
+  opacity: 0.5;
+}
+
 .kanban-header {
   font-weight: bold;
   margin-bottom: 10px;

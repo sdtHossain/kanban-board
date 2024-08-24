@@ -1,5 +1,63 @@
 <script setup lang="ts">
-import TheBanner from '@/components/home/TheBanner.vue'
+import { ref } from 'vue'
+import KanbanList from '@/components/home/KanbanList.vue'
+
+interface taskType {
+  id: number
+  title: String
+}
+const todoItems = ref<Array<taskType>>([
+  { id: 1, title: 'Designing' },
+  { id: 2, title: 'Development' },
+  { id: 3, title: 'Testing' }
+])
+
+const inProgressItems = ref<Array<taskType>>([])
+
+const doneItems = ref<Array<taskType>>([])
+
+const draggedItem = ref()
+const draggedItemType = ref()
+
+const storeDraggedItem = (item: object, id: String) => {
+  draggedItem.value = item
+  draggedItemType.value = id
+  console.log(draggedItem.value, draggedItemType.value)
+}
+const removeItemFromList = (listName: String) => {
+  switch (listName) {
+    case 'todo':
+      todoItems.value = todoItems.value.filter((item) => item.id !== draggedItem.value.id)
+      break
+    case 'inProgress':
+      inProgressItems.value = inProgressItems.value.filter(
+        (item) => item.id !== draggedItem.value.id
+      )
+      break
+    case 'done':
+      doneItems.value = doneItems.value.filter((item) => item.id !== draggedItem.value.id)
+      break
+  }
+}
+
+const addItemToList = (listName: String) => {
+  switch (listName) {
+    case 'todo':
+      todoItems.value.push(draggedItem.value)
+      break
+    case 'inProgress':
+      inProgressItems.value.push(draggedItem.value)
+      break
+    case 'done':
+      doneItems.value.push(draggedItem.value)
+      break
+  }
+}
+const filterTaskList = (dropToId: String) => {
+  // console.log(dropToId, draggedItem.value.id)
+  removeItemFromList(draggedItemType.value)
+  addItemToList(dropToId)
+}
 </script>
 
 <template>
@@ -9,28 +67,33 @@ import TheBanner from '@/components/home/TheBanner.vue'
       <div class="row">
         <!-- To Do Column -->
         <div class="col-lg-4">
-          <div class="kanban-column">
-            <div class="kanban-header">To Do</div>
-            <div class="kanban-item">Task 1: Research</div>
-            <div class="kanban-item">Task 2: Planning</div>
-            <div class="kanban-item">Task 3: Design</div>
-          </div>
+          <KanbanList
+            title="To Do"
+            :items="todoItems"
+            id="todo"
+            @filter-task="filterTaskList"
+            @drag-event="storeDraggedItem"
+          />
         </div>
         <!-- In Progress Column -->
         <div class="col-lg-4">
-          <div class="kanban-column">
-            <div class="kanban-header">In Progress</div>
-            <div class="kanban-item">Task 4: Development</div>
-            <div class="kanban-item">Task 5: Testing</div>
-          </div>
+          <KanbanList
+            title="In Progress"
+            :items="inProgressItems"
+            id="inProgress"
+            @filter-task="filterTaskList"
+            @drag-event="storeDraggedItem"
+          />
         </div>
         <!-- Done Column -->
         <div class="col-lg-4">
-          <div class="kanban-column">
-            <div class="kanban-header">Done</div>
-            <div class="kanban-item">Task 6: Review</div>
-            <div class="kanban-item">Task 7: Deployment</div>
-          </div>
+          <KanbanList
+            title="Done"
+            :items="doneItems"
+            id="done"
+            @filter-task="filterTaskList"
+            @drag-event="storeDraggedItem"
+          />
         </div>
       </div>
     </div>

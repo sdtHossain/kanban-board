@@ -22,9 +22,6 @@
         <li class="nav-item">
           <RouterLink :to="{ name: 'home' }" class="nav-link">FAQs</RouterLink>
         </li>
-        <li class="nav-item">
-          <RouterLink :to="{ name: 'about' }" class="nav-link">About</RouterLink>
-        </li>
       </ul>
     </header>
   </div>
