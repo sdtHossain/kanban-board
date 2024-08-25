@@ -11,6 +11,11 @@ interface emitItemType {
   index: number
   id: String
 }
+interface newItemAdd {
+  newTaskId: number
+  newTask: String
+  id: String
+}
 const todoItems = ref<Array<taskType>>([
   { id: 1, title: 'Designing' },
   { id: 2, title: 'Development' },
@@ -57,6 +62,15 @@ const addItemToList = (listName: String) => {
       doneItems.value.push(draggedItem.value!)
       break
   }
+}
+
+const addNewItem = (info: newItemAdd) => {
+  console.log('add new item ', info)
+  let item = { id: Number(info.newTaskId), title: info.newTask }
+  draggedItem.value = item
+  console.log(item)
+  addItemToList(info.id)
+  // draggedItemType.value = id
 }
 
 const moveItemWithinList = (listName: String, newIndex: number) => {
@@ -144,6 +158,7 @@ const onDropToColumn = (id: String) => {
             @on-drop-event="onDrop"
             @on-drag-end-event="onDragEnd"
             @in-drop-to-column="onDropToColumn"
+            @add-item-to-list="addNewItem"
           />
         </div>
         <!-- In Progress Column -->
@@ -156,6 +171,7 @@ const onDropToColumn = (id: String) => {
             @on-drop-event="onDrop"
             @on-drag-end-event="onDragEnd"
             @in-drop-to-column="onDropToColumn"
+            @add-item-to-list="addNewItem"
           />
         </div>
         <!-- Done Column -->
@@ -168,6 +184,7 @@ const onDropToColumn = (id: String) => {
             @on-drop-event="onDrop"
             @on-drag-end-event="onDragEnd"
             @in-drop-to-column="onDropToColumn"
+            @add-item-to-list="addNewItem"
           />
         </div>
       </div>

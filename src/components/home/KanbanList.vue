@@ -19,7 +19,13 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['onDragStartEvent', 'onDropEvent', 'onDragEndEvent', 'inDropToColumn'])
+const emit = defineEmits([
+  'onDragStartEvent',
+  'onDropEvent',
+  'onDragEndEvent',
+  'inDropToColumn',
+  'addItemToList'
+])
 
 const newTask = ref()
 const newTaskId = ref()
@@ -56,7 +62,14 @@ const newTaskId = ref()
               class="form-control"
             />
           </p>
-          <button class="btn btn-primary">Add</button>
+          <button
+            class="btn btn-primary"
+            @click="
+              $emit('addItemToList', { newTaskId, newTask, id }), (newTask = ''), (newTaskId = '')
+            "
+          >
+            Add
+          </button>
         </form>
       </div>
     </div>
