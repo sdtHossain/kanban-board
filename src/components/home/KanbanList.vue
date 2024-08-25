@@ -19,47 +19,26 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['filterTask', 'dragEvent', 'addItemToList'])
-
-const tasks = ref<Array<HTMLElement>>([])
-
-// onMounted(() => {
-//   // console.log(tasks.value)
-//   tasks.value.forEach((item) => {
-//     item.addEventListener('dragstart', (e) => {
-//       console.log(e)
-//     })
-//   })
-// })
-
-const droppedItem = ref<object>({})
-const draggedItemType = ref<String>('')
-const droppedToItemsType = ref<String>('')
-
-const dragstart = (item: object, id: String, index: number) => {
-  // console.log(item, id)
-  emit('dragEvent', item, id)
-  tasks.value[index].classList.add('moving')
-}
-
-const dropEvent = (droppToId: String) => {
-  // console.log(item, droppToId)
-  emit('filterTask', droppToId)
-}
+const emit = defineEmits(['onDragStartEvent', 'onDropEvent', 'onDragEndEvent', 'inDropToColumn'])
 
 const newTask = ref()
 const newTaskId = ref()
 </script>
 <template>
-  <div @dragover.prevent @drop="dropEvent(id)" class="kanban-column">
+  <div
+    @dragover.prevent
+    @drop="$props.items?.length! < 1 && $emit('inDropToColumn', id)"
+    class="kanban-column"
+  >
     <div class="kanban-header">{{ title }}</div>
     <div
       class="kanban-item"
       v-for="(item, index) in items"
       :key="index"
-      ref="tasks"
       draggable="true"
-      @dragstart="dragstart(item, id, index)"
+      @dragstart="$emit('onDragStartEvent', { item, index, id })"
+      @drop="$emit('onDropEvent', $event, { index, id })"
+      @dragend="$emit('onDragEndEvent')"
     >
       Task {{ index + 1 }}: {{ item.title }}
     </div>
@@ -77,12 +56,7 @@ const newTaskId = ref()
               class="form-control"
             />
           </p>
-          <button
-            @click="$emit('addItemToList', { newTaskId, newTask, id })"
-            class="btn btn-primary"
-          >
-            Add
-          </button>
+          <button class="btn btn-primary">Add</button>
         </form>
       </div>
     </div>
