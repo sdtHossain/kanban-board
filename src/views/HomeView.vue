@@ -83,13 +83,13 @@ const moveItemWithinList = (listName: String, newIndex: number) => {
 const addItemToListInDedicatedIndex = (listName: String, indexAddTo: number) => {
   switch (listName) {
     case 'todo':
-      todoItems.value.splice(indexAddTo, 0, draggedItem.value)
+      todoItems.value.splice(indexAddTo, 0, draggedItem.value!)
       break
     case 'inProgress':
-      inProgressItems.value.splice(indexAddTo, 0, draggedItem.value)
+      inProgressItems.value.splice(indexAddTo, 0, draggedItem.value!)
       break
     case 'done':
-      doneItems.value.splice(indexAddTo, 0, draggedItem.value)
+      doneItems.value.splice(indexAddTo, 0, draggedItem.value!)
       break
   }
 }
